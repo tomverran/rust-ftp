@@ -1,5 +1,4 @@
 use std::io::{Read, BufRead, BufReader, BufWriter, Cursor, Write, copy};
-use std::error::Error;
 use std::net::{TcpStream, SocketAddr};
 use std::string::String;
 use std::str::FromStr;
@@ -327,8 +326,8 @@ impl FtpStream {
     /// # assert!(conn.rm("retr.txt").is_ok());
     /// ```
 
-    pub fn retr<F, A>(&mut self, filename: &str, reader: F) -> result::Result<A, Box<Error>>
-    where F: Fn(&mut Read) -> result::Result<A, Box<Error>> {
+    pub fn retr<F, A, E>(&mut self, filename: &str, reader: F) -> result::Result<A, E>
+    where F: Fn(&mut Read) -> result::Result<A, E>, E: From<FtpError> {
         let retr_command = format!("RETR {}\r\n", filename);
         let mut data_stream = BufReader::new(self.data_command(&retr_command)?);
         self.read_response_in(&[status::ABOUT_TO_SEND, status::ALREADY_OPEN])?;
