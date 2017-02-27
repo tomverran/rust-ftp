@@ -12,6 +12,7 @@ use super::data_stream::DataStream;
 use super::status;
 use super::types::{FileType, FtpError, Line, Result};
 use std::error::Error;
+use std::error::Error;
 use std::result;
 
 lazy_static! {
